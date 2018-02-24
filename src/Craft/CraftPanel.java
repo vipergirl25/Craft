@@ -530,23 +530,30 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		Point move = arg0.getPoint();
 		Double moveX = move.getX();
 		Double moveY = move.getY();
-		int xSet = moveX.intValue() - 400;
-		int ySet = moveY.intValue() - 310;
+		int xSet = moveX.intValue(); 
+		int ySet = moveY.intValue();
 		Rectangle ableToMove = new Rectangle(270, 0, 1200, 1080);
 		if(ableToMove.contains(move)) {
-			if(trees.drawPreviewTree==true) {
-				trees.setX(xSet);
-				trees.setY(ySet);
-			}else if(buildings.drawPreviewBuilding==true) {
-				buildings.setX(xSet);
-				buildings.setY(ySet);
-			}else if(characters.drawPreviewCharacter==true) {
-				characters.setX(xSet);
-				characters.setY(ySet);
-			}else if(animals.drawPreviewAnimal==true) {
-				animals.setX(xSet);
-				animals.setY(ySet);
+		if(trees.drawPreviewTree==true) {
+			if(xSet - trees.trees.get(realTreeToDraw).getWidth()/2 < 0) {
+				trees.setX(0 + trees.trees.get(realTreeToDraw).getWidth());
+			}else if(ySet - trees.trees.get(realTreeToDraw).getHeight()/2 < 0) {
+				trees.setY(0);
+			}else if(xSet - trees.trees.get(realTreeToDraw).getWidth()/2 < 1470) {
+				trees.setX(1470 - trees.trees.get(realTreeToDraw).getWidth());
 			}
+			trees.setX(xSet - trees.trees.get(realTreeToDraw).getWidth()/2);
+			trees.setY(ySet - trees.trees.get(realTreeToDraw).getHeight()/2);
+		}else if(buildings.drawPreviewBuilding==true) {
+			buildings.setX(xSet - buildings.buildings.get(realBuildingToDraw).getWidth()/2);
+			buildings.setY(ySet - buildings.buildings.get(realBuildingToDraw).getHeight()/2);
+		}else if(characters.drawPreviewCharacter==true) {
+			characters.setX(xSet - characters.characters.get(realCharacterToDraw).getWidth()/2);
+			characters.setY(ySet - characters.characters.get(realCharacterToDraw).getHeight()/2);
+		}else if(animals.drawPreviewAnimal==true) {
+			animals.setX(xSet - animals.animals.get(realAnimalToDraw).getWidth()/2);
+			animals.setY(ySet - animals.animals.get(realAnimalToDraw).getWidth()/2);
+		}
 		}
 	}
 	@Override
