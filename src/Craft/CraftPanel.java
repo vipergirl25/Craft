@@ -26,7 +26,7 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	final int INSTRUCTION_STATE = 1;
 	final int CRAFT_STATE = 2;
 	final int END_STATE = 3;
-	int currentState = END_STATE;
+	int currentState = MENU_STATE;
 	Font titleFont;
 	Font subtitleFont;
 	Font instructionFont;
@@ -107,9 +107,21 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	}
 	void drawInstructionState(Graphics g) {
 		g.drawImage(instructionBackground, 0, 0, 1920, 1080, this);
-		g.setColor(Color.GRAY);
+		g.setColor(Color.PINK);
 		g.setFont(instructionFont);
 		g.drawString("Welcome to the Create A World Game!", 450, 150);
+		g.setFont(instructionFont);
+		g.drawString("The point of this game is to create an image.", 50, 350);
+		g.setColor(Color.BLACK);
+		g.drawString("You just click on the buttons, choose the image you want, and add it.", 50, 450);
+		g.setColor(Color.PINK);
+		g.drawString("You can move the images around, but only if you are in that images draw mode", 50, 550);
+		g.setColor(Color.BLACK);
+		g.drawString("That means that if you are in add tree mode, you can only move a tree.", 50, 650);
+		g.setColor(Color.PINK);
+		g.drawString("The 'choose bg' button allows you to choose the background.", 50, 750);
+		g.setColor(Color.BLACK);
+		g.drawString("Press enter to continue.", 50, 850);
 	}
 	void updateCraftState() {
 		

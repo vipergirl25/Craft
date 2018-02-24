@@ -14,6 +14,7 @@ public class Backgrounds {
 	public static BufferedImage background4;
 	public static BufferedImage background5;
 	public static BufferedImage background6;
+	public static BufferedImage background7;
 	boolean drawPreviewBackground;
 	boolean drawRealBackground;
 	int backgroundToDraw;
@@ -28,6 +29,7 @@ public class Backgrounds {
 			background4 = ImageIO.read(this.getClass().getResource("background 4.jpg"));
 			background5 = ImageIO.read(this.getClass().getResource("background 5.jpg"));
 			background6 = ImageIO.read(this.getClass().getResource("background 6.jpg"));
+			background7 = ImageIO.read(this.getClass().getResource("end screen background.jpg"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -37,12 +39,14 @@ public class Backgrounds {
 		previewbackgrounds.add(background4);
 		previewbackgrounds.add(background5);
 		previewbackgrounds.add(background6);
+		previewbackgrounds.add(background7);
 		backgrounds.add(background1);
 		backgrounds.add(background2);
 		backgrounds.add(background3);
 		backgrounds.add(background4);
 		backgrounds.add(background5);
 		backgrounds.add(background6);
+		backgrounds.add(background7);
 		maximumBackground = backgrounds.size() - 1;
 	}
 	void drawPreviewBackground(Graphics g, int backgroundToDraw) {
