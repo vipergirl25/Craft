@@ -346,12 +346,14 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 				backgrounds.drawPreviewBackground = false;
 				trees.drawPreviewTree = true;
 				characters.drawPreviewCharacter = false;
+				buildings.drawPreviewBuilding = false;
 				animals.drawPreviewAnimal = false;
 				deleteObjectFunctional = true;
 			}else if(chooseBackgroundClicked.contains(click)) {
 				backgrounds.drawPreviewBackground = true;
 				trees.drawPreviewTree = false;
 				characters.drawPreviewCharacter = false;
+				buildings.drawPreviewBuilding = false;
 				animals.drawPreviewAnimal = false;
 				deleteObjectFunctional = true;
 			}else if(exitGameClicked.contains(click)) {
