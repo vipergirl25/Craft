@@ -13,9 +13,12 @@ public class Trees {
 	public static BufferedImage tree3;
 	public static BufferedImage tree4;
 	public static BufferedImage tree5;
-	boolean keepTree;
+	boolean drawRealTree;
 	boolean drawPreviewTree;
 	int treeToDraw;
+	int x = 270;
+	int y = 0;
+	int maximumTree;
 	ArrayList<BufferedImage>previewtrees = new ArrayList<BufferedImage>();
 	ArrayList<BufferedImage>trees = new ArrayList<BufferedImage>();
 	Trees() {
@@ -38,6 +41,7 @@ public class Trees {
 		trees.add(tree3);
 		trees.add(tree4);
 		trees.add(tree5);
+		maximumTree = trees.size() - 1;
 	}
 	void drawPreviewTree(Graphics g, int treeToDraw) {
 		for (int i = 0; i < previewtrees.size(); i++) {
@@ -49,9 +53,15 @@ public class Trees {
 	void drawrealTree(Graphics g, int treeToDraw) {
 		for (int i = 0; i < trees.size(); i++) {
 			if(treeToDraw==i) {
-				g.drawImage(trees.get(i), 270, 0, null);
+				g.drawImage(trees.get(i), x, y, null);
 				break;
 			}
 		}
+	}
+	void setX(int x) {
+		this.x = x;
+	}
+	void setY(int y) {
+		this.y = y;
 	}
 }

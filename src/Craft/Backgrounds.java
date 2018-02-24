@@ -15,8 +15,9 @@ public class Backgrounds {
 	public static BufferedImage background5;
 	public static BufferedImage background6;
 	boolean drawPreviewBackground;
-	boolean keepBackground;
+	boolean drawRealBackground;
 	int backgroundToDraw;
+	int maximumBackground;
 	ArrayList<BufferedImage>previewbackgrounds=new ArrayList<BufferedImage>();
 	ArrayList<BufferedImage>backgrounds=new ArrayList<BufferedImage>();
 	Backgrounds() {
@@ -42,6 +43,7 @@ public class Backgrounds {
 		backgrounds.add(background4);
 		backgrounds.add(background5);
 		backgrounds.add(background6);
+		maximumBackground = backgrounds.size() - 1;
 	}
 	void drawPreviewBackground(Graphics g, int backgroundToDraw) {
 		for (int i = 0; i < previewbackgrounds.size(); i++) {

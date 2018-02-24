@@ -26,12 +26,13 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	final int INSTRUCTION_STATE = 1;
 	final int CRAFT_STATE = 2;
 	final int END_STATE = 3;
-	int currentState = MENU_STATE;
+	int currentState = END_STATE;
 	Font titleFont;
 	Font subtitleFont;
 	Font instructionFont;
 	public static BufferedImage beginGameBackground;
 	public static BufferedImage instructionBackground;
+	public static BufferedImage endScreenBackground;
 	public static BufferedImage addAnimal;
 	public static BufferedImage addCharacter;
 	public static BufferedImage addBuilding;
@@ -44,9 +45,9 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	boolean deleteExitGame;
 	boolean drawLeft;
 	boolean drawRight;
-	boolean drawBackground;
-	boolean drawTree;
 	boolean chooseFunctional;
+	boolean exitFunctional;
+	boolean deleteObjectFunctional;
 	int previewBackgroundToDraw;
 	int realBackgroundToDraw;
 	int previewTreeToDraw;
@@ -61,6 +62,8 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	ExitGame exitgame  = new ExitGame();
 	Backgrounds backgrounds = new Backgrounds();
 	Trees trees = new Trees();
+	Buildings buildings = new Buildings();
+	Animals animals = new Animals();
 	Arrows arrows = new Arrows();
 	Choose choose = new Choose();
 	CraftPanel() {
@@ -71,6 +74,7 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		try {
 			beginGameBackground = ImageIO.read(this.getClass().getResource("Title Screen Background.png"));
 			instructionBackground = ImageIO.read(this.getClass().getResource("Instructions Background.jpg"));
+			endScreenBackground = ImageIO.read(this.getClass().getResource("end screen background.jpg"));
 			addCharacter = ImageIO.read(this.getClass().getResource("add character.jpg"));
 			addAnimal = ImageIO.read(this.getClass().getResource("add animal.jpg"));
 			addBuilding = ImageIO.read(this.getClass().getResource("add building.jpg"));
@@ -121,51 +125,107 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		g.drawImage(addTree, 20, 160, this);
 		g.drawImage(chooseBackground, 20, 200, this);
 		g.drawImage(exitGame, 20, 240, this);
-		if(drawBackground==true) {
-			if(backgrounds.drawPreviewBackground==true) {
-				if(previewBackgroundToDraw!=0&&previewBackgroundToDraw!=5) {
-					arrows.drawLeftArrow = true;
-					arrows.drawRightArrow = true;
-					arrows.drawArrows(g);
-				}else if(previewBackgroundToDraw==0) {
-					arrows.drawLeftArrow=false;
-					arrows.drawRightArrow = true;
-					arrows.drawArrows(g);
-				}else if(previewBackgroundToDraw==5) {
-					arrows.drawRightArrow=false;
-					arrows.drawLeftArrow=true;
-					arrows.drawArrows(g);
-				}
-				choose.addChoose();
-				choose.drawChoose(g);
-				backgrounds.drawPreviewBackground(g, previewBackgroundToDraw);
+		if(backgrounds.drawPreviewBackground==true) {
+			if(previewBackgroundToDraw!=0&&previewBackgroundToDraw!=backgrounds.maximumBackground) {
+				arrows.drawLeftArrow = true;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewBackgroundToDraw==0) {
+				arrows.drawLeftArrow=false;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewBackgroundToDraw==backgrounds.maximumBackground) {
+				arrows.drawRightArrow=false;
+				arrows.drawLeftArrow=true;
+				arrows.drawArrows(g);
 			}
+			choose.addChoose();
+			choose.drawChoose(g);
+			backgrounds.drawPreviewBackground(g, previewBackgroundToDraw);
 		}
-		if(drawTree==true) {
-			if(trees.drawPreviewTree==true) {
-				if(previewTreeToDraw!=0&&previewTreeToDraw!=4) {
-					arrows.drawLeftArrow = true;
-					arrows.drawRightArrow = true;
-					arrows.drawArrows(g);
-				}else if(previewTreeToDraw==0) {
-					arrows.drawLeftArrow=false;
-					arrows.drawRightArrow = true;
-					arrows.drawArrows(g);
-				}else if(previewTreeToDraw==4) {
-					arrows.drawRightArrow=false;
-					arrows.drawLeftArrow=true;
-					arrows.drawArrows(g);
-				}
-				choose.addChoose();
-				choose.drawChoose(g);
-				trees.drawPreviewTree(g, previewTreeToDraw);
+		if(trees.drawPreviewTree==true) {
+			if(previewTreeToDraw!=0&&previewTreeToDraw!=4) {
+				arrows.drawLeftArrow = true;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewTreeToDraw==0) {
+				arrows.drawLeftArrow=false;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewTreeToDraw==4) {
+				arrows.drawRightArrow=false;
+				arrows.drawLeftArrow=true;
+				arrows.drawArrows(g);
 			}
+			choose.addChoose();
+			choose.drawChoose(g);
+			trees.drawPreviewTree(g, previewTreeToDraw);
+		}else if(buildings.drawPreviewBuilding==true) {
+			if(previewBuildingToDraw!=0&&previewBuildingToDraw!=buildings.maximumBuilding) {
+				arrows.drawLeftArrow = true;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewBuildingToDraw==0) {
+				arrows.drawLeftArrow=false;
+				arrows.drawRightArrow = true;
+				arrows.drawArrows(g);
+			}else if(previewBuildingToDraw==buildings.maximumBuilding) {
+				arrows.drawRightArrow=false;
+				arrows.drawLeftArrow=true;
+				arrows.drawArrows(g);
+			}
+			choose.addChoose();
+			choose.drawChoose(g);
+			buildings.drawPreviewBuilding(g, previewBuildingToDraw);
+		}else if(characters.drawPreviewCharacter==true) {
+			if(previewCharacterToDraw!=0&&previewCharacterToDraw!=characters.maximumCharacter) {
+				arrows.drawLeftArrow=true;
+				arrows.drawRightArrow=true;
+				arrows.drawArrows(g);
+			}else if(previewCharacterToDraw==0) {
+				arrows.drawLeftArrow=false;
+				arrows.drawRightArrow=true;
+				arrows.drawArrows(g);
+			}else if(previewCharacterToDraw==characters.maximumCharacter) {
+				arrows.drawRightArrow=false;
+				arrows.drawLeftArrow=true;
+				arrows.drawArrows(g);
+			}
+			choose.addChoose();
+			choose.drawChoose(g);
+			characters.drawPreviewCharacter(g, previewCharacterToDraw);
+		}else if(animals.drawPreviewAnimal==true) {
+			if(previewAnimalToDraw!=0&&previewAnimalToDraw!=animals.maximumAnimal) {
+				arrows.drawLeftArrow=true;
+				arrows.drawRightArrow=true;
+				arrows.drawArrows(g);
+			}else if(previewAnimalToDraw==0) {
+				arrows.drawLeftArrow=false;
+				arrows.drawRightArrow=true;
+				arrows.drawArrows(g);
+			}else if(previewAnimalToDraw==animals.maximumAnimal) {
+				arrows.drawRightArrow=false;
+				arrows.drawLeftArrow=true;
+				arrows.drawArrows(g);
+			}
+			choose.addChoose();
+			choose.drawChoose(g);
+			animals.drawPreviewAnimal(g, previewAnimalToDraw);
 		}
-		if(backgrounds.keepBackground==true) {
+		if(backgrounds.drawRealBackground==true) {
 			backgrounds.drawRealBackground(g, realBackgroundToDraw);
 		}
-		if(trees.keepTree==true) {
+		if(buildings.drawRealBuilding==true) {
+			buildings.drawRealBuilding(g, realBuildingToDraw);
+		}
+		if(trees.drawRealTree==true) {
 			trees.drawrealTree(g, realTreeToDraw);
+		}
+		if(characters.drawRealCharacter==true) {
+			characters.drawRealCharacter(g, realCharacterToDraw);
+		}
+		if(animals.drawRealAnimal==true) {
+			animals.drawRealAnimal(g, realAnimalToDraw);
 		}
 		if(drawAreYouSure == true) {
 			exitgame.exitGame(g);
@@ -178,8 +238,32 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		
 	}
 	void drawEndState(Graphics g) {
-		g.setColor(Color.MAGENTA);
-		g.fillRect(0, 0, 1920, 1080);
+		g.drawImage(endScreenBackground, 0, 0, 1920, 1080, this);
+		g.setFont(titleFont);
+		g.setColor(Color.PINK);
+		g.drawString("Thanks for playing!", 350, 300);
+		g.drawImage(seeInstructions, 740, 430, this);
+		g.drawImage(playAgain, 950, 430, this);
+	}
+	void resetCraftState() {
+		animals = new Animals();
+		previewAnimalToDraw = 0;
+		realAnimalToDraw = 0;
+		characters = new Characters();
+		previewCharacterToDraw = 0;
+		realAnimalToDraw = 0;
+		backgrounds = new Backgrounds();
+		previewBackgroundToDraw = 0;
+		realBackgroundToDraw = 0;
+		trees = new Trees();
+		previewTreeToDraw = 0;
+		realTreeToDraw = 0;
+		buildings = new Buildings();
+		previewBuildingToDraw = 0;
+		realBuildingToDraw = 0;
+		choose = new Choose();
+		exitgame = new ExitGame();
+		arrows = new Arrows();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -221,92 +305,201 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		Rectangle leftArrowClicked = new Rectangle(1485, 210, 50, 50);
 		Rectangle rightArrowClicked = new Rectangle(1840, 210, 50, 50);
 		Rectangle chooseClicked = new Rectangle(1580, 425, 200, 30);
-		if(addCharacterClicked.contains(click)) {
-			System.out.println("change this to a thing");
-			backgrounds.drawPreviewBackground = false;
-			trees.drawPreviewTree = false;
-		}else if(addAnimalClicked.contains(click)) {
-			System.out.println("add animal");
-			backgrounds.drawPreviewBackground = false;
-			trees.drawPreviewTree = false;
-		}else if(addBuildingClicked.contains(click)) {
-			System.out.println("add building");
-			backgrounds.drawPreviewBackground = false;
-			trees.drawPreviewTree = false;
-		}else if(addTreeClicked.contains(click)) {
-			System.out.println("add tree");
-			trees.keepTree = false;
-			backgrounds.drawPreviewBackground = false;
-			trees.drawPreviewTree = true;
-			drawTree = true;
-		}else if(chooseBackgroundClicked.contains(click)) {
-			System.out.println("choose background");
-			backgrounds.keepBackground = false;
-			backgrounds.drawPreviewBackground = true;
-			trees.drawPreviewTree = false;
-			drawBackground = true;
-		}else if(exitGameClicked.contains(click)) {
-			drawAreYouSure = true;
-			deleteExitGame = false;
-		}else if(yesClicked.contains(click)) {
-			currentState = END_STATE;
-		}else if(noIllStayClicked.contains(click)) {
-			deleteExitGame = true;
-			drawAreYouSure = false;
-		}else if(leftArrowClicked.contains(click)) {
-			System.out.println("left");
-			chooseFunctional = false;
-			drawLeft = true;
-			drawRight = false;
-			if(backgrounds.drawPreviewBackground == true) {
-				if(chooseFunctional==false) {
-					if(previewBackgroundToDraw==0) {
-						previewBackgroundToDraw=0;
-					}else {
-						previewBackgroundToDraw--;
+		Rectangle deleteObjectClicked = new Rectangle(1580,465, 200, 30);
+		Rectangle seeInstructionsClicked = new Rectangle(750, 485, 200, 30);
+		Rectangle playAgainClicked = new Rectangle(960, 485, 200, 30);
+		if(currentState==CRAFT_STATE) {
+			if(addCharacterClicked.contains(click)) {
+				backgrounds.drawPreviewBackground = false;
+				trees.drawPreviewTree = false;
+				buildings.drawPreviewBuilding = false;
+				characters.drawPreviewCharacter = true;
+				animals.drawPreviewAnimal = false;
+				deleteObjectFunctional = true;
+			}else if(addAnimalClicked.contains(click)) {
+				backgrounds.drawPreviewBackground = false;
+				trees.drawPreviewTree = false;
+				buildings.drawPreviewBuilding = false;
+				characters.drawPreviewCharacter = false;
+				animals.drawPreviewAnimal = true;
+				deleteObjectFunctional = true;
+			}else if(addBuildingClicked.contains(click)) {
+				backgrounds.drawPreviewBackground = false;
+				trees.drawPreviewTree = false;
+				buildings.drawPreviewBuilding = true;
+				characters.drawPreviewCharacter = false;
+				animals.drawPreviewAnimal = false;
+				deleteObjectFunctional = true;
+			}else if(addTreeClicked.contains(click)) {
+				backgrounds.drawPreviewBackground = false;
+				trees.drawPreviewTree = true;
+				characters.drawPreviewCharacter = false;
+				animals.drawPreviewAnimal = false;
+				deleteObjectFunctional = true;
+			}else if(chooseBackgroundClicked.contains(click)) {
+				backgrounds.drawPreviewBackground = true;
+				trees.drawPreviewTree = false;
+				characters.drawPreviewCharacter = false;
+				animals.drawPreviewAnimal = false;
+				deleteObjectFunctional = true;
+			}else if(exitGameClicked.contains(click)) {
+				drawAreYouSure = true;
+				deleteExitGame = false;
+				exitFunctional = true;
+			}else if(yesClicked.contains(click)) {
+				if(exitFunctional == true) {
+					currentState = END_STATE;
+				}
+			}else if(noIllStayClicked.contains(click)) {
+				deleteExitGame = true;
+				drawAreYouSure = false;
+				exitFunctional = false;
+			}else if(leftArrowClicked.contains(click)) {
+				chooseFunctional = false;
+				drawLeft = true;
+				drawRight = false;
+				if(backgrounds.drawPreviewBackground == true) {
+					if(chooseFunctional==false) {
+						if(previewBackgroundToDraw==0) {
+							previewBackgroundToDraw=0;
+						}else {
+							previewBackgroundToDraw--;
+						}
+					}
+				}else if(trees.drawPreviewTree == true) {
+					if(chooseFunctional==false) {
+						if(previewTreeToDraw==0) {
+							previewTreeToDraw=0;
+						}else {
+							previewTreeToDraw--;
+						}
+					}
+				}else if(buildings.drawPreviewBuilding == true) {
+					if(chooseFunctional==false) {
+						if(previewBuildingToDraw==0) {
+							previewBuildingToDraw=0;
+						}else {
+							previewBuildingToDraw--;
+						}
+					}
+				}else if(characters.drawPreviewCharacter == true) {
+					if(chooseFunctional==false) {
+						if(previewCharacterToDraw==0) {
+							previewCharacterToDraw=0;
+						}else {
+							previewCharacterToDraw--;
+						}
+					}
+				}else if(animals.drawPreviewAnimal == true) {
+					if(chooseFunctional==false) {
+						if(previewAnimalToDraw==0) {
+							previewAnimalToDraw=0;
+						}else {
+							previewAnimalToDraw--;
+						}
 					}
 				}
-			}else if(trees.drawPreviewTree == true) {
-				if(chooseFunctional==false) {
-					if(previewTreeToDraw==0) {
-						previewTreeToDraw=0;
-					}else {
-						previewTreeToDraw--;
+			}else if(rightArrowClicked.contains(click)) {
+				chooseFunctional = false;
+				drawRight = true;
+				drawLeft = false;
+				if(backgrounds.drawPreviewBackground == true) {
+					if(chooseFunctional==false) {
+						if(previewBackgroundToDraw==backgrounds.maximumBackground) {
+							previewBackgroundToDraw=backgrounds.maximumBackground;
+						}else {
+							previewBackgroundToDraw++;
+						}
+					}
+				}else if(trees.drawPreviewTree == true) {
+					if(chooseFunctional==false) {
+						if(previewTreeToDraw==trees.maximumTree) {
+							previewTreeToDraw=4;
+						}else {
+							previewTreeToDraw++;
+						}
+					}
+				}else if(buildings.drawPreviewBuilding == true) {
+					if(chooseFunctional==false) {
+						if(previewBuildingToDraw==buildings.maximumBuilding) {
+							previewBuildingToDraw=buildings.maximumBuilding;
+						}else {
+							previewBuildingToDraw++;
+						}
+					}
+				}else if(characters.drawPreviewCharacter == true) {
+					if(chooseFunctional==false) {
+						if(previewCharacterToDraw==characters.maximumCharacter) {
+							previewCharacterToDraw=characters.maximumCharacter;
+						}else {
+							previewCharacterToDraw++;
+						}
+					}
+				}else if(animals.drawPreviewAnimal == true) {
+					if(chooseFunctional==false) {
+						if(previewAnimalToDraw==animals.maximumAnimal) {
+							previewAnimalToDraw = animals.maximumAnimal;
+						}else {
+							previewAnimalToDraw++;
+						}
+					}
+				}
+			}else if(chooseClicked.contains(click)) {
+				chooseFunctional = true;
+				if(trees.drawPreviewTree==true) {
+					trees.drawRealTree=true;
+				}else if(buildings.drawPreviewBuilding==true) {
+					buildings.drawRealBuilding=true;
+				}else if(characters.drawPreviewCharacter==true) {
+					characters.drawRealCharacter=true;
+				}else if(animals.drawPreviewAnimal==true) {
+					animals.drawRealAnimal=true;
+				}
+				if(backgrounds.drawPreviewBackground==true) {
+					backgrounds.drawRealBackground=true;
+					realBackgroundToDraw = previewBackgroundToDraw;
+				}
+				if(trees.drawRealTree==true) {
+					trees.setX(trees.x);
+					trees.setY(trees.y);
+					realTreeToDraw = previewTreeToDraw;
+				}
+				if(buildings.drawRealBuilding==true) {
+					buildings.setX(buildings.x);
+					buildings.setY(buildings.y);
+					realBuildingToDraw = previewBuildingToDraw;
+				}
+				if(characters.drawRealCharacter==true) {
+					characters.setX(characters.x);
+					characters.setY(characters.y);
+					realCharacterToDraw = previewCharacterToDraw;
+				}
+				if(animals.drawRealAnimal==true) {
+					animals.setX(animals.x);
+					animals.setY(animals.y);
+					realAnimalToDraw = previewAnimalToDraw;
+				}
+			}else if(deleteObjectClicked.contains(click)) {
+				if(deleteObjectFunctional==true) {
+					if(backgrounds.drawPreviewBackground==true) {
+						backgrounds.drawRealBackground = false;
+					}else if(characters.drawPreviewCharacter==true) {
+						characters.drawRealCharacter = false;
+					}else if(animals.drawPreviewAnimal==true) {
+						animals.drawRealAnimal = false;
+					}else if(trees.drawPreviewTree==true) {
+						trees.drawRealTree = false;
+					}else if(buildings.drawPreviewBuilding==true) {
+						buildings.drawRealBuilding = false;
 					}
 				}
 			}
-		}else if(rightArrowClicked.contains(click)) {
-			System.out.println("right");
-			chooseFunctional = false;
-			drawRight = true;
-			drawLeft = false;
-			if(backgrounds.drawPreviewBackground == true) {
-				if(chooseFunctional==false) {
-					if(previewBackgroundToDraw==5) {
-						previewBackgroundToDraw=5;
-					}else {
-						previewBackgroundToDraw++;
-					}
-				}
-			}else if(trees.drawPreviewTree == true) {
-				if(chooseFunctional==false) {
-					if(previewTreeToDraw==4) {
-						previewTreeToDraw=4;
-					}else {
-						previewTreeToDraw++;
-					}
-				}
-			}
-		}else if(chooseClicked.contains(click)) {
-			System.out.println("choose");
-			chooseFunctional = true;
-			if(drawBackground==true) {
-				backgrounds.keepBackground=true;
-				realBackgroundToDraw = previewBackgroundToDraw;
-			}
-			if(drawTree==true) {
-				trees.keepTree=true;
-				realTreeToDraw = previewTreeToDraw;
+		}else if(currentState==END_STATE) {
+			if(seeInstructionsClicked.contains(click)) {
+				currentState = INSTRUCTION_STATE;
+			}else if(playAgainClicked.contains(click)) {
+				currentState = CRAFT_STATE;
+				resetCraftState();
 			}
 		}
 	}
@@ -320,7 +513,27 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		
+		Point move = arg0.getPoint();
+		Double moveX = move.getX();
+		Double moveY = move.getY();
+		int xSet = moveX.intValue() - 400;
+		int ySet = moveY.intValue() - 310;
+		Rectangle ableToMove = new Rectangle(270, 0, 1200, 1080);
+		if(ableToMove.contains(move)) {
+			if(trees.drawPreviewTree==true) {
+				trees.setX(xSet);
+				trees.setY(ySet);
+			}else if(buildings.drawPreviewBuilding==true) {
+				buildings.setX(xSet);
+				buildings.setY(ySet);
+			}else if(characters.drawPreviewCharacter==true) {
+				characters.setX(xSet);
+				characters.setY(ySet);
+			}else if(animals.drawPreviewAnimal==true) {
+				animals.setX(xSet);
+				animals.setY(ySet);
+			}
+		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
@@ -328,7 +541,6 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	}
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		System.out.println("hello");
 		if(arg0.getKeyCode()==KeyEvent.VK_ENTER) {
 			currentState++;
 			System.out.println(currentState);
@@ -340,12 +552,10 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	}
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		System.out.println("hello");
 		
 	}
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		System.out.println("hello");
 		
 	}
 }
