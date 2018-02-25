@@ -106,6 +106,7 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		
 	}
 	void drawInstructionState(Graphics g) {
+		resetCraftState();
 		g.drawImage(instructionBackground, 0, 0, 1920, 1080, this);
 		g.setColor(Color.PINK);
 		g.setFont(instructionFont);
@@ -306,20 +307,20 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 	public void mouseClicked(MouseEvent arg0) {
 		Point click = arg0.getPoint();
 		System.out.println(click);
-		Rectangle addCharacterClicked = new Rectangle(30, 90, 200, 30);
-		Rectangle addAnimalClicked = new Rectangle(30, 135, 200, 30);
-		Rectangle addBuildingClicked = new Rectangle(30, 175, 200, 30);
-		Rectangle addTreeClicked = new Rectangle(30, 215, 200, 30);
-		Rectangle chooseBackgroundClicked = new Rectangle(30, 255, 200, 30);
-		Rectangle exitGameClicked = new Rectangle(30, 295, 200, 30);
-		Rectangle yesClicked = new Rectangle(740, 490, 200, 30);
-		Rectangle noIllStayClicked = new Rectangle(970, 490, 200, 30);
-		Rectangle leftArrowClicked = new Rectangle(1485, 210, 50, 50);
-		Rectangle rightArrowClicked = new Rectangle(1840, 210, 50, 50);
-		Rectangle chooseClicked = new Rectangle(1580, 425, 200, 30);
-		Rectangle deleteObjectClicked = new Rectangle(1580,465, 200, 30);
-		Rectangle seeInstructionsClicked = new Rectangle(750, 485, 200, 30);
-		Rectangle playAgainClicked = new Rectangle(960, 485, 200, 30);
+		Rectangle addCharacterClicked = new Rectangle(90, 75, 200, 30);
+		Rectangle addAnimalClicked = new Rectangle(110, 105, 200, 30);
+		Rectangle addBuildingClicked = new Rectangle(20, 145, 200, 30);
+		Rectangle addTreeClicked = new Rectangle(20, 185, 200, 30);
+		Rectangle chooseBackgroundClicked = new Rectangle(20, 215, 200, 30);
+		Rectangle exitGameClicked = new Rectangle(30, 255, 200, 30);
+		Rectangle yesClicked = new Rectangle(730, 465, 200, 30);
+		Rectangle noIllStayClicked = new Rectangle(960, 465, 200, 30);
+		Rectangle leftArrowClicked = new Rectangle(1475, 180, 50, 50);
+		Rectangle rightArrowClicked = new Rectangle(1830, 175, 50, 50);
+		Rectangle chooseClicked = new Rectangle(1570, 395, 200, 30);
+		Rectangle deleteObjectClicked = new Rectangle(1570,435, 200, 30);
+		Rectangle seeInstructionsClicked = new Rectangle(740, 455, 200, 30);
+		Rectangle playAgainClicked = new Rectangle(950, 455, 200, 30);
 		if(currentState==CRAFT_STATE) {
 			if(addCharacterClicked.contains(click)) {
 				backgrounds.drawPreviewBackground = false;
@@ -534,26 +535,64 @@ public class CraftPanel extends JPanel implements ActionListener, KeyListener, M
 		int ySet = moveY.intValue();
 		Rectangle ableToMove = new Rectangle(270, 0, 1200, 1080);
 		if(ableToMove.contains(move)) {
-		if(trees.drawPreviewTree==true) {
-			if(xSet - trees.trees.get(realTreeToDraw).getWidth()/2 < 0) {
-				trees.setX(0 + trees.trees.get(realTreeToDraw).getWidth());
-			}else if(ySet - trees.trees.get(realTreeToDraw).getHeight()/2 < 0) {
-				trees.setY(0);
-			}else if(xSet - trees.trees.get(realTreeToDraw).getWidth()/2 < 1470) {
-				trees.setX(1470 - trees.trees.get(realTreeToDraw).getWidth());
+			if(trees.drawPreviewTree==true) {
+				if(xSet - trees.trees.get(realTreeToDraw).getWidth()/2 < 270) {
+					trees.setX(270);
+				}else if(xSet + trees.trees.get(realTreeToDraw).getWidth()/2 > 1470) {
+					trees.setX(1470 - trees.trees.get(realTreeToDraw).getWidth());
+				}else {
+					trees.setX(xSet - trees.trees.get(realTreeToDraw).getWidth()/2);
+				}
+				if(ySet - trees.trees.get(realTreeToDraw).getHeight()/2 < 0) {
+					trees.setY(0);
+				}else if(ySet - trees.trees.get(realTreeToDraw).getHeight()/2 > 1080) {
+					trees.setY(1080 - trees.trees.get(realTreeToDraw).getHeight());
+				}else {
+					trees.setY(ySet - trees.trees.get(realTreeToDraw).getHeight()/2);
+				}
+			}else if(buildings.drawPreviewBuilding==true) {
+				if(xSet - buildings.buildings.get(realBuildingToDraw).getWidth()/2 < 270) {
+					buildings.setX(270);
+				}else if(xSet + buildings.buildings.get(realBuildingToDraw).getWidth()/2 > 1470) {
+					buildings.setX(1470 - buildings.buildings.get(realBuildingToDraw).getWidth());
+				}else {
+					buildings.setX(xSet - buildings.buildings.get(realBuildingToDraw).getWidth()/2);
+				}if(ySet - buildings.buildings.get(realBuildingToDraw).getWidth()/2 < 0) {
+					buildings.setY(0);
+				}else if(ySet - buildings.buildings.get(realBuildingToDraw).getHeight()/2 > 1080) {
+					buildings.setY(1080 - buildings.buildings.get(realBuildingToDraw).getHeight());
+				}else {
+					buildings.setY(ySet - buildings.buildings.get(realBuildingToDraw).getHeight()/2);
+				}
+				}else if(characters.drawPreviewCharacter==true) {
+					if(xSet - characters.characters.get(realCharacterToDraw).getWidth()/2 < 270) {
+						characters.setX(270);
+					}else if(xSet + characters.characters.get(realCharacterToDraw).getWidth()/2 > 1470) {
+						characters.setX(1470 - characters.characters.get(realCharacterToDraw).getWidth());
+					}else {
+						characters.setX(xSet - characters.characters.get(realCharacterToDraw).getWidth()/2);
+					}if(ySet - characters.characters.get(realCharacterToDraw).getWidth()/2 < 0) {
+						characters.setY(0);
+					}else if(ySet - characters.characters.get(realCharacterToDraw).getHeight()/2 > 1080) {
+						characters.setY(1080 - characters.characters.get(realCharacterToDraw).getHeight());
+					}else {
+						characters.setY(ySet - characters.characters.get(realCharacterToDraw).getHeight()/2);
+					}
+			}else if(animals.drawPreviewAnimal==true) {
+				if(xSet - animals.animals.get(realAnimalToDraw).getWidth()/2 < 270) {
+					animals.setX(270);
+				}else if(xSet + animals.animals.get(realAnimalToDraw).getWidth()/2 > 1470) {
+					animals.setX(1470 - animals.animals.get(realAnimalToDraw).getWidth());
+				}else {
+					animals.setX(xSet - animals.animals.get(realAnimalToDraw).getWidth()/2);
+				}if(ySet - animals.animals.get(realCharacterToDraw).getWidth()/2 < 0) {
+					animals.setY(0);
+				}else if(ySet - animals.animals.get(realAnimalToDraw).getHeight()/2 > 1080) {
+					animals.setY(1080 - animals.animals.get(realAnimalToDraw).getHeight());
+				}else {
+					animals.setY(ySet - animals.animals.get(realAnimalToDraw).getHeight()/2);
+				}
 			}
-			trees.setX(xSet - trees.trees.get(realTreeToDraw).getWidth()/2);
-			trees.setY(ySet - trees.trees.get(realTreeToDraw).getHeight()/2);
-		}else if(buildings.drawPreviewBuilding==true) {
-			buildings.setX(xSet - buildings.buildings.get(realBuildingToDraw).getWidth()/2);
-			buildings.setY(ySet - buildings.buildings.get(realBuildingToDraw).getHeight()/2);
-		}else if(characters.drawPreviewCharacter==true) {
-			characters.setX(xSet - characters.characters.get(realCharacterToDraw).getWidth()/2);
-			characters.setY(ySet - characters.characters.get(realCharacterToDraw).getHeight()/2);
-		}else if(animals.drawPreviewAnimal==true) {
-			animals.setX(xSet - animals.animals.get(realAnimalToDraw).getWidth()/2);
-			animals.setY(ySet - animals.animals.get(realAnimalToDraw).getWidth()/2);
-		}
 		}
 	}
 	@Override
